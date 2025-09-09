@@ -9,14 +9,29 @@ export const isDev = () => {
 };
 
 /**
+ * 获取平台信息，在浏览器环境中返回默认值
+ */
+const getPlatform = () => {
+	try {
+		// 检查是否在Tauri环境中
+		if (typeof window !== "undefined" && window.__TAURI__) {
+			return platform();
+		}
+		return "unknown";
+	} catch {
+		return "unknown";
+	}
+};
+
+/**
  * 是否为 macos 系统
  */
-export const isMac = platform() === "macos";
+export const isMac = getPlatform() === "macos";
 
 /**
  * 是否为 windows 系统
  */
-export const isWin = platform() === "windows";
+export const isWin = getPlatform() === "windows";
 
 /**
  * 是否为 linux 系统

@@ -316,7 +316,9 @@ const Item: FC<ItemProps> = (props) => {
 			gap={4}
 			className={clsx(
 				className,
-				"group antd-input! b-color-2 absolute inset-0 mx-3 h-full rounded-md p-1.5",
+				"group antd-input! b-color-2 rounded-md p-1.5",
+				// 根据是否有style属性判断是否为虚拟化列表模式
+				rest.style ? "absolute inset-0 mx-3 h-full" : "relative h-full w-full",
 				{
 					"antd-input-focus!": state.activeId === id,
 				},
@@ -338,7 +340,9 @@ const Item: FC<ItemProps> = (props) => {
 			<div className="relative flex-1 select-auto overflow-hidden break-words children:transition">
 				<div
 					className={clsx(
-						"pointer-events-none absolute inset-0 line-clamp-4 opacity-0",
+						"pointer-events-none absolute inset-0 opacity-0",
+						// 根据是否有style属性判断显示行数（虚拟化列表显示4行，dock模式显示2行）
+						rest.style ? "line-clamp-4" : "line-clamp-2",
 						{
 							"opacity-100": note,
 							"group-hover:opacity-0": content.showOriginalContent,
@@ -354,10 +358,15 @@ const Item: FC<ItemProps> = (props) => {
 				</div>
 
 				<div
-					className={clsx("h-full", {
-						"opacity-0": note,
-						"group-hover:opacity-100": content.showOriginalContent,
-					})}
+					className={clsx(
+						"h-full",
+						// 根据是否有style属性判断显示行数（虚拟化列表显示4行，dock模式显示2行）
+						rest.style ? "line-clamp-4" : "line-clamp-2",
+						{
+							"opacity-0": note,
+							"group-hover:opacity-100": content.showOriginalContent,
+						},
+					)}
 				>
 					{renderContent()}
 				</div>

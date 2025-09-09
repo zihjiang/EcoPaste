@@ -19,3 +19,14 @@ html {
     }
   }
 }
+
+// 隐藏滚动条的工具类
+.scrollbar-hide {
+  /* 隐藏滚动条但保持滚动功能 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}

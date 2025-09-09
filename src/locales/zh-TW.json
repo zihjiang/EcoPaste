@@ -15,10 +15,14 @@
 			"window_settings": {
 				"title": "視窗設定",
 				"label": {
+					"window_style": "視窗樣式",
+					"window_style_float": "懸浮視窗",
+					"window_style_dock": "停靠視窗",
 					"window_position": "視窗位置",
 					"window_position_remember": "記住位置",
 					"window_position_follow": "跟隨滑鼠",
 					"window_position_center": "螢幕中央",
+					"window_position_bottom": "下方",
 					"back_top": "啟動時回到頂部",
 					"show_all": "啟動時切換至全部分組"
 				},

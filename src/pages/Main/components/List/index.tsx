@@ -1,16 +1,22 @@
 import Scrollbar from "@/components/Scrollbar";
 import { MainContext } from "@/pages/Main";
+import { clipboardStore } from "@/stores/clipboard";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { FloatButton, Modal } from "antd";
 import { findIndex } from "lodash-es";
+import { useSnapshot } from "valtio";
 import Item from "./components/Item";
 import NoteModal, { type NoteModalRef } from "./components/NoteModal";
 
 const List = () => {
 	const { state, getList } = useContext(MainContext);
+	const { window } = useSnapshot(clipboardStore);
 	const outerRef = useRef<HTMLDivElement>(null);
 	const noteModelRef = useRef<NoteModalRef>(null);
 	const [deleteModal, contextHolder] = Modal.useModal();
+
+	// 判断是否为dock模式（底部位置）
+	const isDockMode = window.position === "bottom";
 
 	const rowVirtualizer = useVirtualizer({
 		count: state.list.length,
@@ -102,6 +108,49 @@ const List = () => {
 		state.activeId = state.list[0]?.id;
 	};
 
+	// Dock模式渲染（网格布局）
+	if (isDockMode) {
+		return (
+			<>
+				<div
+					ref={outerRef}
+					className="scrollbar-hide flex-1 overflow-x-auto overflow-y-hidden"
+					style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+				>
+					<div
+						data-tauri-drag-region
+						className="flex h-full gap-3 px-3 py-2"
+						style={{ minWidth: "max-content" }}
+					>
+						{state.list.map((data, index) => {
+							let { type, value } = data;
+							value = type !== "image" ? value : resolveImagePath(value);
+
+							return (
+								<div
+									key={data.id}
+									className="relative h-40vh min-h-300px w-200px flex-shrink-0"
+								>
+									<Item
+										index={index}
+										data={{ ...data, value }}
+										deleteModal={deleteModal}
+										openNoteModel={() => noteModelRef.current?.open()}
+										className="!mx-0 !rounded-lg h-full w-full"
+									/>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+
+				<NoteModal ref={noteModelRef} />
+				{contextHolder}
+			</>
+		);
+	}
+
+	// Float模式渲染（列表布局）
 	return (
 		<>
 			<Scrollbar ref={outerRef} offset={3} className="flex-1">

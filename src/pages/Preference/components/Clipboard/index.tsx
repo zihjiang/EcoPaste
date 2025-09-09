@@ -7,6 +7,7 @@ import AutoPaste from "./components/AutoPaste";
 import OperationButton from "./components/OperationButton";
 import SearchPosition from "./components/SearchPosition";
 import WindowPosition from "./components/WindowPosition";
+import WindowStyle from "./components/WindowStyle";
 
 const ClipboardSettings = () => {
 	const { window, audio, search, content } = useSnapshot(clipboardStore);
@@ -15,6 +16,8 @@ const ClipboardSettings = () => {
 	return (
 		<>
 			<ProList header={t("preference.clipboard.window_settings.title")}>
+				<WindowStyle />
+
 				<WindowPosition />
 
 				<ProSwitch

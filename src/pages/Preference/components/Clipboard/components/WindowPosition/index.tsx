@@ -30,6 +30,12 @@ const WindowPosition = () => {
 			),
 			value: "center",
 		},
+		{
+			label: t(
+				"preference.clipboard.window_settings.label.window_position_bottom",
+			),
+			value: "bottom",
+		},
 	];
 
 	return (

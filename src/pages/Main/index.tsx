@@ -188,7 +188,7 @@ const Main = () => {
 					getList,
 				}}
 			>
-				{window.style === "float" ? <Float /> : <Dock />}
+				{window.position === "bottom" ? <Dock /> : <Float />}
 			</MainContext.Provider>
 		</>
 	);

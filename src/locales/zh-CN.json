@@ -15,10 +15,14 @@
 			"window_settings": {
 				"title": "窗口设置",
 				"label": {
+					"window_style": "窗口样式",
+					"window_style_float": "悬浮窗",
+					"window_style_dock": "停靠窗",
 					"window_position": "窗口位置",
 					"window_position_remember": "记住位置",
 					"window_position_follow": "跟随鼠标",
 					"window_position_center": "屏幕中心",
+					"window_position_bottom": "下方",
 					"back_top": "激活时回到顶部",
 					"show_all": "激活时切换至全部分组"
 				},

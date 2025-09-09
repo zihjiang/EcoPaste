@@ -55,28 +55,8 @@ export const toggleWindowVisible = async () => {
 				await emit(LISTEN_KEY.ACTIVATE_BACK_TOP);
 			}
 
-			if (window.style === "float" && window.position !== "remember") {
-				const current = await currentMonitor();
-				const monitor = await getCursorMonitor();
-
-				if (current && monitor) {
-					let { position, size, cursorX, cursorY } = monitor;
-					const windowSize = await appWindow.innerSize();
-					const { width, height } = windowSize.toLogical(current.scaleFactor);
-
-					if (window.position === "follow") {
-						cursorX = Math.min(cursorX, position.x + size.width - width);
-						cursorY = Math.min(cursorY, position.y + size.height - height);
-					} else {
-						cursorX = position.x + (size.width - width) / 2;
-						cursorY = position.y + (size.height - height) / 2;
-					}
-
-					await appWindow.setPosition(
-						new LogicalPosition(Math.round(cursorX), Math.round(cursorY)),
-					);
-				}
-			} else if (window.style === "dock") {
+			// 只有当位置为"bottom"时才使用dock样式（卡片全屏展示）
+			if (window.position === "bottom") {
 				const monitor = await getCursorMonitor();
 
 				if (monitor) {
@@ -87,6 +67,36 @@ export const toggleWindowVisible = async () => {
 
 					await appWindow.setSize(new LogicalSize(width, windowHeight));
 					await appWindow.setPosition(new LogicalPosition(x, y));
+				}
+			} else if (window.position !== "remember") {
+				// 其他位置（follow、center）重置为默认窗口尺寸
+				const current = await currentMonitor();
+				const monitor = await getCursorMonitor();
+
+				if (current && monitor) {
+					let { position, size, cursorX, cursorY } = monitor;
+					// 重置为默认窗口尺寸，避免保持之前全屏拉伸的宽度
+					const defaultWidth = 400;
+					const defaultHeight = 600;
+					await appWindow.setSize(new LogicalSize(defaultWidth, defaultHeight));
+					const { width, height } = {
+						width: defaultWidth,
+						height: defaultHeight,
+					};
+
+					if (window.position === "follow") {
+						// 跟随鼠标位置
+						cursorX = Math.min(cursorX, position.x + size.width - width);
+						cursorY = Math.min(cursorY, position.y + size.height - height);
+					} else if (window.position === "center") {
+						// 屏幕中心位置
+						cursorX = position.x + (size.width - width) / 2;
+						cursorY = position.y + (size.height - height) / 2;
+					}
+
+					await appWindow.setPosition(
+						new LogicalPosition(Math.round(cursorX), Math.round(cursorY)),
+					);
 				}
 			}
 		}

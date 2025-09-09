@@ -15,10 +15,14 @@
 			"window_settings": {
 				"title": "Window Settings",
 				"label": {
+					"window_style": "Window Style",
+					"window_style_float": "Float Window",
+					"window_style_dock": "Dock Window",
 					"window_position": "Window Position",
 					"window_position_remember": "Remember Position",
 					"window_position_follow": "Follow Mouse Cursor",
 					"window_position_center": "Center on Screen",
+					"window_position_bottom": "Bottom",
 					"back_top": "Back to top when activated",
 					"show_all": "Switch to all group when activated"
 				},
